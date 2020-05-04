@@ -51,7 +51,7 @@ spec:
     tessera:
       dburl: "jdbc:mysql://manufacturer:3306/demodb"
       dbusername: demouser
-      url: "http://manufacturer.manufacturer-ns:15022"
+      url: "http://manufacturer.manufacturer-ns:9001"
       othernodes:
         - url: http://carrier.carrier-ns:9001
         - url: http://manufacturer.manufacturer-ns:9001
@@ -66,11 +66,11 @@ spec:
     proxy:
       provider: "ambassador"
       external_url: manufacturer.manufacturer-ns
-      portTM: 15022
-      rpcport: 15021
-      quorumport: 15020
+      portTM: 9001
+      rpcport: 8546
+      quorumport: 21000
   
-      portRaft: 15023
+      portRaft: 50401
     storage:
       storageclassname: minikubestorageclass
       storagesize: 1Gi
