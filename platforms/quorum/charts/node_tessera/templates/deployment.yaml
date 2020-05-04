@@ -282,7 +282,7 @@ spec:
           rm -f $QUORUM_HOME/crypto/keys/nodekey
           rm -f $QUORUM_HOME/crypto/keys/passwords.txt
 
-          until $(curl -k --output /dev/null --silent --head --fail {{ .Values.tessera.url }}/upcheck); do echo 'waiting for transaction manager to start...'; sleep 5; done;
+          until $(curl -k --output /dev/null --silent --head --fail http://$HOSTNAME:{{ .Values.node.ports.tm }}/upcheck); do echo 'waiting for transaction manager to start...'; sleep 5; done;
           echo transaction manager is up;
 
           args=""
