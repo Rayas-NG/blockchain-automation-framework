@@ -53,8 +53,9 @@ module.exports = {
       timeoutBlocks: 200
     },
     manufacturer: {
-      host: "manufacturer.quo.demo.aws.blockchaincloudpoc.com",     // Localhost (default: none)
-      port: 15021,            // Standard Ethereum port (default: none)
+      host: '192.168.99.108',     // Localhost (default: none)
+      //port: 15021,            // Standard Ethereum port (default: none)
+      port: 16872,
       network_id: "*", // Match any network id
       gasPrice: 0,
       gas: 3000000000,
