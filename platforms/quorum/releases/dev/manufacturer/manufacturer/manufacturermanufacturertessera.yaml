@@ -1,0 +1,77 @@
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: manufacturermanufacturertessera
+  namespace: manufacturer-ns
+  annotations:
+    flux.weave.works/automated: "false"
+spec:
+  releaseName: manufacturermanufacturertessera
+  chart:
+    git: git@github.com:Rayas-NG/blockchain-automation-framework.git
+    ref: local
+    path: platforms/quorum/charts/node_tessera  
+  values:
+    replicaCount: 1
+    metadata:
+      namespace: manufacturer-ns
+      labels:
+    images:
+      node: quorumengineering/quorum:2.5.0
+      alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+      tessera: quorumengineering/tessera:0.11
+      busybox: busybox
+      mysql: mysql/mysql-server:5.7
+    node:
+      name: manufacturer
+      status: default
+      consensus: raft
+      subject: O=Manufacturer,OU=Manufacturer,L=47.38/8.54/Zurich,C=CH
+      mountPath: /etc/quorum/qdata
+      imagePullSecret: regcred
+      keystore: keystore_1
+     
+      servicetype: NodePort
+      ports:
+        rpc: 8546
+        raft: 50401
+        tm: 9001
+        quorum: 21000
+        db: 3306
+      dbname: demodb
+      mysqluser: demouser
+    vault:
+      address: http://192.168.0.10:8200
+      secretprefix: secret/manufacturer-ns/crypto/manufacturer
+      serviceaccountname: vault-auth
+      keyname: quorum
+      tm_keyname: transaction
+      role: vault-role
+      authpath: quorummanufacturer
+    tessera:
+      dburl: "jdbc:mysql://manufacturer:3306/demodb"
+      dbusername: demouser
+      url: "http://manufacturer.manufacturer-ns:9001"
+      othernodes:
+        - url: http://carrier.carrier-ns:9001
+        - url: http://manufacturer.manufacturer-ns:9001
+        - url: http://warehouse.warehouse-ns:9001
+      tls: "OFF"
+      trust: "TOFU"
+    genesis: ewogICAgImFsbG9jIjogewogICAgICAgICIyNDUyNjQ1M2UwMGI2ZDA3YmQ2ZTRmZjFkNDJmM2M5YjQ0NTg2YmRmIjogewogICAgICAgICAgICAiYmFsYW5jZSI6ICIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIgogICAgICAgIH0sCiAgICAgICAgIjQ3OTMwNTM4ZDNhNzI3YjAzMTBiZDllMmU2Y2U1MDliZGFlMzg4OTciOiB7CiAgICAgICAgICAgICJiYWxhbmNlIjogIjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiAgICAgICAgfSwKICAgICAgICAiZTE5MjZiYjZlMThlNDYxMWViNWRhODExZTFjNzM2ZGU2ZTczZGJhMSI6IHsKICAgICAgICAgICAgImJhbGFuY2UiOiAiMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIKICAgICAgICB9CiAgICB9LAogICAgImNvaW5iYXNlIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAiY29uZmlnIjogewogICAgICAgICJieXphbnRpdW1CbG9jayI6IDEsCiAgICAgICAgImNoYWluSWQiOiAxMCwKICAgICAgICAiY29uc3RhbnRpbm9wbGVCbG9jayI6IDAsCiAgICAgICAgImVpcDE1MEJsb2NrIjogMSwKICAgICAgICAiZWlwMTUwSGFzaCI6ICIweDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLAogICAgICAgICJlaXAxNTVCbG9jayI6IDAsCiAgICAgICAgImVpcDE1OEJsb2NrIjogMSwKICAgICAgICAiaXNRdW9ydW0iOiB0cnVlLAogICAgICAgICJwZXRlcnNidXJnQmxvY2siOiAwLAogICAgICAgICJyYWZ0U2Vjb25kcyI6IHRydWUsCiAgICAgICAgInR4blNpemVMaW1pdCI6IDEyOAogICAgfSwKICAgICJkaWZmaWN1bHR5IjogIjB4MCIsCiAgICAiZXh0cmFEYXRhIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAiZ2FzTGltaXQiOiAiMHhFMDAwMDAwMDAwIiwKICAgICJtaXhoYXNoIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA2NDc1NzI2MTZjNjU3ODczNjU2NDZjNjU3OCIsCiAgICAibm9uY2UiOiAiMHgwIiwKICAgICJwYXJlbnRIYXNoIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAidGltZXN0YW1wIjogIjB4MDAiCn0=
+    staticnodes:
+      - enode://3d32f568134cb66ebcfc825e066da384dcc16154c391cbfd2c0334ac296603969a49659190ef37362a2513f8ab822cd7a33b61e86999e5d7dd1739c4d8bcbd33@carrier.manufacturer-ns:21000?discport=0&raftport=50401
+      - enode://fa196a4109f37c4f75c3926684d3e2786a1ca40a65ffef95fb2c3feab3b2dfbe76c2ce8ea85a31c38fbe2827b5272deb5390a8d4019fa822f77a3fad0d671da1@manufacturer.manufacturer-ns:21000?discport=0&raftport=50401
+      - enode://5ed24827521ff29e0403cdacb8ba0e5f74f17cb4bc56684af2a20ce5907f19f44d9d470b74532cb74361e1f7a6d976d19be9dca8b20c08e9c65573ae094c4aa3@warehouse.manufacturer-ns:21000?discport=0&raftport=50401
+    proxy:
+      provider: "ambassador"
+      external_url: manufacturer.manufacturer-ns
+      portTM: 9001
+      rpcport: 8546
+      quorumport: 21000
+  
+      portRaft: 50401
+    storage:
+      storageclassname: minikubestorageclass
+      storagesize: 1Gi
+      dbstorage: 1Gi
