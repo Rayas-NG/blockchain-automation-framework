@@ -51,17 +51,17 @@ spec:
     tessera:
       dburl: "jdbc:mysql://warehouse:3306/demodb"
       dbusername: demouser
-      url: "http://warehouse.warehouse-ns:9001"
+      url: "http://warehouse-0:9001"
       othernodes:
-        - url: http://carrier.carrier-ns:9001
-        - url: http://manufacturer.manufacturer-ns:9001
-        - url: http://warehouse.warehouse-ns:9001
+        - url: http://carrier-0:9001
+        - url: http://manufacturer-0:9001
+        - url: http://warehouse-0:9001
       tls: "OFF"
       trust: "TOFU"
     genesis: ewogICAgImFsbG9jIjogewogICAgICAgICIyNDUyNjQ1M2UwMGI2ZDA3YmQ2ZTRmZjFkNDJmM2M5YjQ0NTg2YmRmIjogewogICAgICAgICAgICAiYmFsYW5jZSI6ICIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIgogICAgICAgIH0sCiAgICAgICAgIjQ3OTMwNTM4ZDNhNzI3YjAzMTBiZDllMmU2Y2U1MDliZGFlMzg4OTciOiB7CiAgICAgICAgICAgICJiYWxhbmNlIjogIjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiAgICAgICAgfSwKICAgICAgICAiZTE5MjZiYjZlMThlNDYxMWViNWRhODExZTFjNzM2ZGU2ZTczZGJhMSI6IHsKICAgICAgICAgICAgImJhbGFuY2UiOiAiMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIKICAgICAgICB9CiAgICB9LAogICAgImNvaW5iYXNlIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAiY29uZmlnIjogewogICAgICAgICJieXphbnRpdW1CbG9jayI6IDEsCiAgICAgICAgImNoYWluSWQiOiAxMCwKICAgICAgICAiY29uc3RhbnRpbm9wbGVCbG9jayI6IDAsCiAgICAgICAgImVpcDE1MEJsb2NrIjogMSwKICAgICAgICAiZWlwMTUwSGFzaCI6ICIweDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLAogICAgICAgICJlaXAxNTVCbG9jayI6IDAsCiAgICAgICAgImVpcDE1OEJsb2NrIjogMSwKICAgICAgICAiaXNRdW9ydW0iOiB0cnVlLAogICAgICAgICJwZXRlcnNidXJnQmxvY2siOiAwLAogICAgICAgICJyYWZ0U2Vjb25kcyI6IHRydWUsCiAgICAgICAgInR4blNpemVMaW1pdCI6IDEyOAogICAgfSwKICAgICJkaWZmaWN1bHR5IjogIjB4MCIsCiAgICAiZXh0cmFEYXRhIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAiZ2FzTGltaXQiOiAiMHhFMDAwMDAwMDAwIiwKICAgICJtaXhoYXNoIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA2NDc1NzI2MTZjNjU3ODczNjU2NDZjNjU3OCIsCiAgICAibm9uY2UiOiAiMHgwIiwKICAgICJwYXJlbnRIYXNoIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAidGltZXN0YW1wIjogIjB4MDAiCn0=
     staticnodes:
-      - enode://3d32f568134cb66ebcfc825e066da384dcc16154c391cbfd2c0334ac296603969a49659190ef37362a2513f8ab822cd7a33b61e86999e5d7dd1739c4d8bcbd33@carrier.warehouse-ns:21000?discport=0&raftport=50401
-      - enode://fa196a4109f37c4f75c3926684d3e2786a1ca40a65ffef95fb2c3feab3b2dfbe76c2ce8ea85a31c38fbe2827b5272deb5390a8d4019fa822f77a3fad0d671da1@manufacturer.warehouse-ns:21000?discport=0&raftport=50401
+      - enode://3d32f568134cb66ebcfc825e066da384dcc16154c391cbfd2c0334ac296603969a49659190ef37362a2513f8ab822cd7a33b61e86999e5d7dd1739c4d8bcbd33@carrier.carrier-ns:21000?discport=0&raftport=50401
+      - enode://fa196a4109f37c4f75c3926684d3e2786a1ca40a65ffef95fb2c3feab3b2dfbe76c2ce8ea85a31c38fbe2827b5272deb5390a8d4019fa822f77a3fad0d671da1@manufacturer.manufacturer-ns:21000?discport=0&raftport=50401
       - enode://5ed24827521ff29e0403cdacb8ba0e5f74f17cb4bc56684af2a20ce5907f19f44d9d470b74532cb74361e1f7a6d976d19be9dca8b20c08e9c65573ae094c4aa3@warehouse.warehouse-ns:21000?discport=0&raftport=50401
     proxy:
       provider: "ambassador"
