@@ -1,0 +1,77 @@
+apiVersion: flux.weave.works/v1beta1
+kind: HelmRelease
+metadata:
+  name: warehousewarehousetessera
+  namespace: warehouse-ns
+  annotations:
+    flux.weave.works/automated: "false"
+spec:
+  releaseName: warehousewarehousetessera
+  chart:
+    git: git@github.com:Rayas-NG/blockchain-automation-framework.git
+    ref: local
+    path: platforms/quorum/charts/node_tessera  
+  values:
+    replicaCount: 1
+    metadata:
+      namespace: warehouse-ns
+      labels:
+    images:
+      node: quorumengineering/quorum:2.5.0
+      alpineutils: index.docker.io/hyperledgerlabs/alpine-utils:1.0
+      tessera: quorumengineering/tessera:0.11
+      busybox: busybox
+      mysql: mysql/mysql-server:5.7
+    node:
+      name: warehouse
+      status: default
+      consensus: raft
+      subject: O=Warehouse,OU=Warehouse,L=42.36/-71.06/Boston,C=US
+      mountPath: /etc/quorum/qdata
+      imagePullSecret: regcred
+      keystore: keystore_1
+     
+      servicetype: NodePort
+      ports:
+        rpc: 8546
+        raft: 50401
+        tm: 9001
+        quorum: 21000
+        db: 3306
+      dbname: demodb
+      mysqluser: demouser
+    vault:
+      address: http://192.168.0.10:8200
+      secretprefix: secret/warehouse-ns/crypto/warehouse
+      serviceaccountname: vault-auth
+      keyname: quorum
+      tm_keyname: transaction
+      role: vault-role
+      authpath: quorumwarehouse
+    tessera:
+      dburl: "jdbc:mysql://warehouse:3306/demodb"
+      dbusername: demouser
+      url: "http://warehouse.warehouse-ns:9001"
+      othernodes:
+        - url: http://carrier.carrier-ns:9001
+        - url: http://manufacturer.manufacturer-ns:9001
+        - url: http://warehouse.warehouse-ns:9001
+      tls: "OFF"
+      trust: "TOFU"
+    genesis: ewogICAgImFsbG9jIjogewogICAgICAgICIwZmZhYjMyMjFhODQxOTE0ZDc0N2VlNDI5MDk5M2UzOTA3OWNlYjY4IjogewogICAgICAgICAgICAiYmFsYW5jZSI6ICIxMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwIgogICAgICAgIH0sCiAgICAgICAgIjM0YjFkOWIxZmY4ZTBiNjU4OGNjOGNhMmZhMGVjMmI3NjQzMTgyMzciOiB7CiAgICAgICAgICAgICJiYWxhbmNlIjogIjEwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiCiAgICAgICAgfSwKICAgICAgICAiMzcxMDgxZTAzYjUwZGRjOWRmNDE3MWEyN2ZlY2ViZWNlZTBiMDUxMSI6IHsKICAgICAgICAgICAgImJhbGFuY2UiOiAiMTAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIKICAgICAgICB9CiAgICB9LAogICAgImNvaW5iYXNlIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAiY29uZmlnIjogewogICAgICAgICJieXphbnRpdW1CbG9jayI6IDEsCiAgICAgICAgImNoYWluSWQiOiAxMCwKICAgICAgICAiY29uc3RhbnRpbm9wbGVCbG9jayI6IDAsCiAgICAgICAgImVpcDE1MEJsb2NrIjogMSwKICAgICAgICAiZWlwMTUwSGFzaCI6ICIweDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAiLAogICAgICAgICJlaXAxNTVCbG9jayI6IDAsCiAgICAgICAgImVpcDE1OEJsb2NrIjogMSwKICAgICAgICAiaXNRdW9ydW0iOiB0cnVlLAogICAgICAgICJwZXRlcnNidXJnQmxvY2siOiAwLAogICAgICAgICJyYWZ0U2Vjb25kcyI6IHRydWUsCiAgICAgICAgInR4blNpemVMaW1pdCI6IDEyOAogICAgfSwKICAgICJkaWZmaWN1bHR5IjogIjB4MCIsCiAgICAiZXh0cmFEYXRhIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAiZ2FzTGltaXQiOiAiMHhFMDAwMDAwMDAwIiwKICAgICJtaXhoYXNoIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDA2NDc1NzI2MTZjNjU3ODczNjU2NDZjNjU3OCIsCiAgICAibm9uY2UiOiAiMHgwIiwKICAgICJwYXJlbnRIYXNoIjogIjB4MDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMDAwMCIsCiAgICAidGltZXN0YW1wIjogIjB4MDAiCn0=
+    staticnodes:
+      - enode://ffd481decfff1048a4cd46f03249ae5376f555515aa1d9ef5d72ff4c6ac4927111e80af7820a183c664f11e8bf2d0344128b5bad89deda308cd022268319d822@carrier.warehouse-ns:21000?discport=0&raftport=50401
+      - enode://f369a28587351ef77d50d36d0354ee9068b554b7f54e44a9addcf8cb1b7a37fb98defe5e3a720898ec26388b0697f850c3ada26521971c162c45f12d83dc3d32@manufacturer.warehouse-ns:21000?discport=0&raftport=50401
+      - enode://06bb98ff3a1d9dacc1c93f9a256b0f1979f283fab4ea7445e6b79aeeb98e346c58464c3497bc4c29bb935bce7ddba226d59c17aac512c7ef0e1c830e850ec227@warehouse.warehouse-ns:21000?discport=0&raftport=50401
+    proxy:
+      provider: "ambassador"
+      external_url: warehouse.warehouse-ns
+      portTM: 9001
+      rpcport: 8546
+      quorumport: 21000
+  
+      portRaft: 50401
+    storage:
+      storageclassname: minikubestorageclass
+      storagesize: 1Gi
+      dbstorage: 1Gi
